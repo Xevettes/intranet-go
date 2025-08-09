@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package organization_proto;
+
+option go_package = "netbox-gateway/proto/organization";
+
+message GetRequest {
+  int64 id = 1;
+}
+
+message ListRequest {
+  int64 limit = 1;
+  int64 offset = 2;
+}
+
+message DeleteResponse {
+  bool success = 1;
+}
+
+message Tenant {
+  int64 id = 1;
+  string name = 2;
+  string slug = 3;
+  string description = 4;
+}
+message CreateTenantRequest {
+  string name = 1;
+  string slug = 2;
+  string description = 3;
+}
+message ListTenantsResponse {
+  repeated Tenant results = 1;
+  int64 total = 2;
+}
+
+message Site {
+  int64 id = 1;
+  string name = 2;
+  string slug = 3;
+  string status = 4;
+  string description = 5;
+}
+message CreateSiteRequest {
+  string name = 1;
+  string slug = 2;
+  string status = 3;
+  string description = 4;
+}
+message ListSitesResponse {
+  repeated Site results = 1;
+  int64 total = 2;
+}
+
+service OrganizationService {
+  rpc ListTenants(ListRequest) returns (ListTenantsResponse);
+  rpc GetTenant(GetRequest) returns (Tenant);
+  rpc CreateTenant(CreateTenantRequest) returns (Tenant);
+  rpc UpdateTenant(Tenant) returns (Tenant);
+  rpc DeleteTenant(GetRequest) returns (DeleteResponse);
+  
+  rpc ListSites(ListRequest) returns (ListSitesResponse);
+  rpc GetSite(GetRequest) returns (Site);
+  rpc CreateSite(CreateSiteRequest) returns (Site);
+  rpc UpdateSite(Site) returns (Site);
+  rpc DeleteSite(GetRequest) returns (DeleteResponse);
+}

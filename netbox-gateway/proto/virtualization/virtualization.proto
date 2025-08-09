@@ -1,0 +1,58 @@
+syntax = "proto3";
+
+package virtualization_proto;
+
+option go_package = "netbox-gateway/proto/virtualization";
+
+message GetRequest { int64 id = 1; }
+message ListRequest { int64 limit = 1; int64 offset = 2; }
+message DeleteResponse { bool success = 1; }
+
+message Cluster {
+  int64 id = 1;
+  string name = 2;
+  int64 type_id = 3;
+  int64 site_id = 4;
+}
+message CreateClusterRequest {
+  string name = 1;
+  int64 type_id = 2;
+}
+message ListClustersResponse {
+  repeated Cluster results = 1;
+  int64 total = 2;
+}
+
+message VirtualMachine {
+  int64 id = 1;
+  string name = 2;
+  string status = 3;
+  int64 cluster_id = 4;
+  int64 tenant_id = 5;
+  int32 vcpus = 6;
+  int32 memory_mb = 7;
+  int32 disk_gb = 8;
+}
+message CreateVMRequest {
+  string name = 1;
+  int64 cluster_id = 2;
+  string status = 3;
+}
+message ListVMsResponse {
+  repeated VirtualMachine results = 1;
+  int64 total = 2;
+}
+
+service VirtualizationService {
+  rpc ListClusters(ListRequest) returns (ListClustersResponse);
+  rpc GetCluster(GetRequest) returns (Cluster);
+  rpc CreateCluster(CreateClusterRequest) returns (Cluster);
+  rpc UpdateCluster(Cluster) returns (Cluster);
+  rpc DeleteCluster(GetRequest) returns (DeleteResponse);
+  
+  rpc ListVirtualMachines(ListRequest) returns (ListVMsResponse);
+  rpc GetVirtualMachine(GetRequest) returns (VirtualMachine);
+  rpc CreateVirtualMachine(CreateVMRequest) returns (VirtualMachine);
+  rpc UpdateVirtualMachine(VirtualMachine) returns (VirtualMachine);
+  rpc DeleteVirtualMachine(GetRequest) returns (DeleteResponse);
+}

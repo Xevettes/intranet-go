@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package monitoring_proto;
+
+option go_package = "zabbix-gateway/proto/monitoring";
+
+message HostGroup {
+  string groupid = 1;
+  string name = 2;
+}
+
+message Host {
+  string hostid = 1;
+  string host = 2;
+  string name = 3;
+}
+
+message Item {
+  string itemid = 1;
+  string name = 2;
+  string key_ = 3;
+  string lastvalue = 4;
+  string lastclock = 5;
+}
+
+message Alert {
+  string triggerid = 1;
+  string description = 2;
+  string priority = 3;
+  string lastchange = 4;
+  string value = 5;
+}
+
+message ListHostGroupsRequest {}
+message ListHostGroupsResponse {
+  repeated HostGroup groups = 1;
+}
+
+message ListHostsRequest {
+  repeated string groupids = 1;
+}
+message ListHostsResponse {
+  repeated Host hosts = 1;
+}
+
+message ListItemsRequest {
+  repeated string hostids = 1;
+}
+message ListItemsResponse {
+  repeated Item items = 1;
+}
+
+message ListAlertsRequest {
+  repeated string hostids = 1;
+}
+message ListAlertsResponse {
+  repeated Alert alerts = 1;
+}
+
+// --- Definição do Serviço ---
+service MonitoringService {
+  rpc ListHostGroups(ListHostGroupsRequest) returns (ListHostGroupsResponse);
+  rpc ListHosts(ListHostsRequest) returns (ListHostsResponse);
+  rpc ListItems(ListItemsRequest) returns (ListItemsResponse);
+  rpc ListAlerts(ListAlertsRequest) returns (ListAlertsResponse);
+}

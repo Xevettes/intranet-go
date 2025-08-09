@@ -1,0 +1,92 @@
+syntax = "proto3";
+
+package ipam_proto;
+
+option go_package = "netbox-gateway/proto/ipam";
+
+message GetRequest {
+  int64 id = 1;
+}
+
+message ListRequest {
+  int64 limit = 1;
+  int64 offset = 2;
+}
+
+message DeleteResponse {
+  bool success = 1;
+}
+
+message Prefix {
+  int64 id = 1;
+  string prefix = 2;
+  int64 site_id = 3;
+  int64 tenant_id = 4;
+  int64 vlan_id = 5;
+  string status = 6;
+  string description = 7;
+}
+message CreatePrefixRequest {
+  string prefix = 1;
+  int64 tenant_id = 2;
+  string status = 3;
+}
+message ListPrefixesResponse {
+  repeated Prefix results = 1;
+  int64 total = 2;
+}
+
+message IPAddress {
+  int64 id = 1;
+  string address = 2;
+  int64 tenant_id = 3;
+  string status = 4;
+  string description = 5;
+}
+message CreateIPAddressRequest {
+  string address = 1;
+  int64 tenant_id = 2;
+  string status = 3;
+}
+message ListIPAddressesResponse {
+  repeated IPAddress results = 1;
+  int64 total = 2;
+}
+
+message VLAN {
+  int64 id = 1;
+  int32 vid = 2;
+  string name = 3;
+  int64 site_id = 4;
+  string status = 5;
+}
+message CreateVLANRequest {
+  int32 vid = 1;
+  string name = 2;
+  int64 site_id = 3;
+}
+message ListVLANsResponse {
+  repeated VLAN results = 1;
+  int64 total = 2;
+}
+
+
+service IpamService {
+  rpc ListPrefixes(ListRequest) returns (ListPrefixesResponse);
+  rpc GetPrefix(GetRequest) returns (Prefix);
+  rpc CreatePrefix(CreatePrefixRequest) returns (Prefix);
+  rpc UpdatePrefix(Prefix) returns (Prefix);
+  rpc DeletePrefix(GetRequest) returns (DeleteResponse);
+  
+  rpc ListIPAddresses(ListRequest) returns (ListIPAddressesResponse);
+  rpc GetIPAddress(GetRequest) returns (IPAddress);
+  rpc CreateIPAddress(CreateIPAddressRequest) returns (IPAddress);
+  rpc UpdateIPAddress(IPAddress) returns (IPAddress);
+  rpc DeleteIPAddress(GetRequest) returns (DeleteResponse);
+  
+  rpc ListVLANs(ListRequest) returns (ListVLANsResponse);
+  rpc GetVLAN(GetRequest) returns (VLAN);
+  rpc CreateVLAN(CreateVLANRequest) returns (VLAN);
+  rpc UpdateVLAN(VLAN) returns (VLAN);
+  rpc DeleteVLAN(GetRequest) returns (DeleteResponse);
+}

@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package secret_proto;
+
+option go_package = "vault-gateway/proto/vault";
+
+import "google/protobuf/struct.proto";
+
+message ReadSecretRequest {
+	string path = 1;
+}
+
+message ReadSecretResponse {
+	string request_id = 1;
+	string lease_id = 2;
+	bool renewable = 3;
+	int32 lease_duration = 4;
+	google.protobuf.Struct data = 5;
+}
+
+message WriteSecretRequest {
+	string path = 1;
+	google.protobuf.Struct data = 2;
+}
+
+message WriteSecretResponse {
+	bool success = 1;
+}
+message ListSecretsRequest {
+	string path = 1;
+}
+
+message ListSecretsResponse {
+	repeated string keys = 1;
+}
+
+service SecretService {
+	rpc ReadSecret(ReadSecretRequest) returns (ReadSecretResponse);
+	rpc WriteSecret(WriteSecretRequest) returns (WriteSecretResponse);
+	rpc ListSecrets(ListSecretsRequest) returns (ListSecretsResponse);
+}

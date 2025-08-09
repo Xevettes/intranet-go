@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package dcim_proto;
+
+option go_package = "netbox-gateway/proto/dcim";
+
+message GetRequest { int64 id = 1; }
+message ListRequest { int64 limit = 1; int64 offset = 2; }
+message DeleteResponse { bool success = 1; }
+
+message Rack {
+  int64 id = 1;
+  string name = 2;
+  int64 site_id = 3;
+  int64 tenant_id = 4;
+  string status = 5;
+  int32 u_height = 6;
+  string comments = 7;
+}
+message CreateRackRequest {
+  string name = 1;
+  int64 site_id = 2;
+  string status = 3;
+  int32 u_height = 4;
+}
+message ListRacksResponse {
+  repeated Rack results = 1;
+  int64 total = 2;
+}
+
+message Device {
+  int64 id = 1;
+  string name = 2;
+  int64 device_type_id = 3;
+  int64 role_id = 4;
+  int64 site_id = 5;
+  int64 rack_id = 6;
+  string status = 7;
+}
+message CreateDeviceRequest {
+  string name = 1;
+  int64 device_type_id = 2;
+  int64 role_id = 3;
+  int64 site_id = 4;
+}
+message ListDevicesResponse {
+  repeated Device results = 1;
+  int64 total = 2;
+}
+
+service DcimService {
+  rpc ListRacks(ListRequest) returns (ListRacksResponse);
+  rpc GetRack(GetRequest) returns (Rack);
+  rpc CreateRack(CreateRackRequest) returns (Rack);
+  rpc UpdateRack(Rack) returns (Rack);
+  rpc DeleteRack(GetRequest) returns (DeleteResponse);
+  
+  rpc ListDevices(ListRequest) returns (ListDevicesResponse);
+  rpc GetDevice(GetRequest) returns (Device);
+  rpc CreateDevice(CreateDeviceRequest) returns (Device);
+  rpc UpdateDevice(Device) returns (Device);
+  rpc DeleteDevice(GetRequest) returns (DeleteResponse);
+}
