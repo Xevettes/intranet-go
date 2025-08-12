@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package dcim_proto;
 
-option go_package = "netbox-gateway/proto/dcim";
+option go_package = "netbox-gateway/proto/dcim_proto";
 
 message GetRequest { int64 id = 1; }
 message ListRequest { int64 limit = 1; int64 offset = 2; }

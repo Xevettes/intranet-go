@@ -15,7 +15,7 @@ func LoadConfig() (*Config, error) {
 	cfg := &Config{
 		NetboxAPIURL:     os.Getenv("NETBOX_API_URL"),
 		NetboxAPIToken:   os.Getenv("NETBOX_API_TOKEN"),
-		GatewayAuthToken: os.Getenv("GATEWAY_AUTH_TOKEN"),
+		GatewayAuthToken: os.Getenv("INTERNAL_API_AUTH_TOKEN"),
 	}
 
 	if cfg.NetboxAPIURL == "" {
